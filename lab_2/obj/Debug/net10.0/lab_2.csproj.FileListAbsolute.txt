@@ -1,0 +1,14 @@
+C:\Users\hp\RiderProjects\OOP_labs\lab_2\bin\Debug\net10.0\lab_2.exe
+C:\Users\hp\RiderProjects\OOP_labs\lab_2\bin\Debug\net10.0\lab_2.deps.json
+C:\Users\hp\RiderProjects\OOP_labs\lab_2\bin\Debug\net10.0\lab_2.runtimeconfig.json
+C:\Users\hp\RiderProjects\OOP_labs\lab_2\bin\Debug\net10.0\lab_2.dll
+C:\Users\hp\RiderProjects\OOP_labs\lab_2\bin\Debug\net10.0\lab_2.pdb
+C:\Users\hp\RiderProjects\OOP_labs\lab_2\obj\Debug\net10.0\lab_2.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\hp\RiderProjects\OOP_labs\lab_2\obj\Debug\net10.0\lab_2.AssemblyInfoInputs.cache
+C:\Users\hp\RiderProjects\OOP_labs\lab_2\obj\Debug\net10.0\lab_2.AssemblyInfo.cs
+C:\Users\hp\RiderProjects\OOP_labs\lab_2\obj\Debug\net10.0\lab_2.csproj.CoreCompileInputs.cache
+C:\Users\hp\RiderProjects\OOP_labs\lab_2\obj\Debug\net10.0\lab_2.dll
+C:\Users\hp\RiderProjects\OOP_labs\lab_2\obj\Debug\net10.0\refint\lab_2.dll
+C:\Users\hp\RiderProjects\OOP_labs\lab_2\obj\Debug\net10.0\lab_2.pdb
+C:\Users\hp\RiderProjects\OOP_labs\lab_2\obj\Debug\net10.0\lab_2.genruntimeconfig.cache
+C:\Users\hp\RiderProjects\OOP_labs\lab_2\obj\Debug\net10.0\ref\lab_2.dll
