@@ -10,6 +10,7 @@ public class DigitalWallet : IDigitalWallet
     private readonly List<string> transactionLog = new();
     private decimal balance;
     private ILoginProvider? authProvider;
+    private bool isAuthenticated;
 
     public DigitalWallet(string login, string password)
     {
@@ -21,6 +22,20 @@ public class DigitalWallet : IDigitalWallet
     public void SetAuthProvider(ILoginProvider authProvider)
     {
         this.authProvider = authProvider;
+    }
+
+    public void Authenticate(string providerLogin, string providerPassword, string walletPassword)
+    {
+        string enteredHash = Convert.ToBase64String(
+            SHA256.HashData(Encoding.UTF8.GetBytes(walletPassword)));
+
+        if (authProvider == null || enteredHash != passwordHash ||
+            !authProvider.Validate(providerLogin, providerPassword))
+        {
+            throw new UnauthorizedAccessException("Invalid credentials");
+        }
+
+        isAuthenticated = true;
     }
 
     public List<string> GetTransactionLog()
@@ -64,10 +79,7 @@ public class DigitalWallet : IDigitalWallet
 
     private void ValidateAuthentication()
     {
-        string currentHash = Convert.ToBase64String(
-            SHA256.HashData(Encoding.UTF8.GetBytes(passwordHash)));
-
-        if (authProvider == null || !authProvider.Validate(login, currentHash))
+        if (!isAuthenticated)
         {
             throw new UnauthorizedAccessException("Invalid credentials");
         }

@@ -9,7 +9,8 @@ string login = Console.ReadLine() ?? "";
 Console.Write("Введіть пароль гаманця: ");
 string password = Console.ReadLine() ?? "";
 
-IDigitalWallet wallet = new DigitalWallet(login, password);
+var digitalWallet = new DigitalWallet(login, password);
+IDigitalWallet wallet = digitalWallet;
 
 Console.WriteLine("Оберіть провайдера автентифікації:");
 Console.WriteLine("1 — Gmail");
@@ -24,6 +25,8 @@ if (Console.ReadLine() == "1")
     Console.Write("Пароль Gmail: ");
     string gmailPassword = Console.ReadLine() ?? "";
     authProvider = new GmailAuthProvider(gmail, gmailPassword);
+    login = gmail;
+    password = gmailPassword;
 }
 else
 {
@@ -32,9 +35,24 @@ else
     Console.Write("Пароль банкінгу: ");
     string bankingPassword = Console.ReadLine() ?? "";
     authProvider = new Privat24AuthProvider(phone, bankingPassword);
+    login = phone;
+    password = bankingPassword;
 }
 
 wallet.SetAuthProvider(authProvider);
+Console.Write("Пароль гаманця: ");
+string walletPassword = Console.ReadLine() ?? "";
+
+try
+{
+    digitalWallet.Authenticate(login, password, walletPassword);
+    Console.WriteLine("Автентифікацію пройдено.");
+}
+catch (UnauthorizedAccessException ex)
+{
+    Console.WriteLine(ex.Message);
+    return;
+}
 
 while (true)
 {
