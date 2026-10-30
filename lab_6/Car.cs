@@ -1,22 +1,17 @@
 namespace lab_6;
 
-public class Car
+public class Car : Vehicle
 {
-    public string Manufacturer { get; }
-    public string Model { get; }
-    public int Year { get; }
-    public decimal Price { get; }
+    public string BodyType { get; }
 
-    public Car(string manufacturer, string model, int year, decimal price)
+    public Car(string manufacturer, string model, int year, decimal price, string bodyType = "Седан")
+        : base(manufacturer, model, year, price)
     {
-        Manufacturer = manufacturer;
-        Model = model;
-        Year = year;
-        Price = price;
+        BodyType = string.IsNullOrWhiteSpace(bodyType) ? "Седан" : bodyType;
     }
 
     public override string ToString()
     {
-        return $"{Manufacturer} {Model}, {Year}, {Price:F2} грн.";
+        return $"{base.ToString()} [Тип кузова: {BodyType}]";
     }
 }

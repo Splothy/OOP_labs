@@ -8,11 +8,13 @@ public class Inventory
 
     public void Add(Car car)
     {
+        ArgumentNullException.ThrowIfNull(car);
         cars.Add(car);
     }
 
     public bool Remove(Car car)
     {
+        ArgumentNullException.ThrowIfNull(car);
         return cars.Remove(car);
     }
 
