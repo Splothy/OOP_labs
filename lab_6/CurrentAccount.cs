@@ -9,14 +9,18 @@ public class CurrentAccount
         Balance += amount;
     }
 
-    public bool Pay(decimal amount)
+    public void Pay(decimal amount)
     {
-        if (amount < 0 || Balance < amount)
+        if (amount <= 0)
         {
-            return false;
+            throw new ArgumentException("Сума має бути більшою за нуль.", nameof(amount));
+        }
+
+        if (Balance < amount)
+        {
+            throw new InvalidOperationException("Недостатньо коштів на рахунку.");
         }
 
         Balance -= amount;
-        return true;
     }
 }

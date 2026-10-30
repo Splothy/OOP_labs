@@ -23,68 +23,100 @@ public class CarDealer : ICarDealer
         return inventory.Find(manufacturer, model);
     }
 
-    public bool SellCar(Car car, decimal amount)
-    {
-        Car? availableCar = inventory.Find(car.Manufacturer, car.Model);
-        if (availableCar == null || !account.Pay(amount))
-        {
-            return false;
-        }
-
-        inventory.Remove(availableCar);
-        return true;
-    }
-
-    public bool BuyCar(Car car, decimal amount)
-    {
-        if (!inventory.Remove(car))
-        {
-            return false;
-        }
-
-        account.Add(amount);
-        return true;
-    }
-
     public void AddCar(Car car)
     {
         inventory.Add(car);
     }
 
-    public bool SellToCustomer(string manufacturer, string model)
+    public void SellToCustomer(string manufacturer, string model)
     {
         Car? car = inventory.Find(manufacturer, model);
         if (car == null)
         {
-            return false;
+            throw new InvalidOperationException("Автомобіль не знайдено.");
+        }
+
+        decimal salePrice = car.Price * (1 + Markup / 100);
+        if (account.Balance < salePrice)
+        {
+            throw new InvalidOperationException("На рахунку недостатньо коштів для продажу.");
         }
 
         inventory.Remove(car);
-        account.Add(car.Price * (1 + Markup / 100));
-        return true;
+        account.Add(salePrice);
     }
 
-    public bool Trade(Car customerCar, string manufacturer, string model)
+    public void Exchange(ICarDealer otherDealer, Car carToGive, string manufacturer, string model)
     {
-        Car? dealerCar = inventory.Find(manufacturer, model);
-        if (dealerCar == null)
+        if (otherDealer == null)
         {
-            return false;
+            throw new ArgumentNullException(nameof(otherDealer));
         }
 
-        decimal compensation = dealerCar.Price - customerCar.Price;
-        if (compensation > 0 && !account.Pay(compensation))
+        if (carToGive == null || carToGive.Price <= 0 || string.IsNullOrWhiteSpace(carToGive.Manufacturer) ||
+            string.IsNullOrWhiteSpace(carToGive.Model) || carToGive.Year <= 0)
         {
-            return false;
+            throw new ArgumentException("Дані автомобіля для обміну некоректні.", nameof(carToGive));
         }
 
-        inventory.Remove(dealerCar);
-        inventory.Add(customerCar);
-        if (compensation < 0)
+        Car? carToReceive = otherDealer.FindCar(manufacturer, model);
+        if (carToReceive == null)
         {
-            account.Add(-compensation);
+            throw new InvalidOperationException("Автомобіль іншого автосалону не знайдено.");
         }
 
-        return true;
+        decimal cashChange = carToGive.Price - carToReceive.Price;
+        ValidateExchange(carToGive, cashChange);
+        otherDealer.ValidateExchange(carToReceive, -cashChange);
+
+        if (!inventory.Remove(carToGive))
+        {
+            throw new InvalidOperationException("Автомобіль цього автосалону більше недоступний для обміну.");
+        }
+
+        inventory.Add(carToReceive);
+        if (cashChange > 0)
+        {
+            account.Add(cashChange);
+        }
+        else if (cashChange < 0)
+        {
+            account.Pay(-cashChange);
+        }
+
+        otherDealer.CompleteExchange(carToGive, carToReceive, -cashChange);
+    }
+
+    public void ValidateExchange(Car carToGive, decimal cashChange)
+    {
+        if (inventory.Find(carToGive.Manufacturer, carToGive.Model) == null)
+        {
+            throw new InvalidOperationException("Автомобіль для обміну відсутній у цьому автосалоні.");
+        }
+
+        if (cashChange < 0 && account.Balance < -cashChange)
+        {
+            throw new InvalidOperationException("В іншого автосалону недостатньо коштів для компенсації.");
+        }
+    }
+
+    public void CompleteExchange(Car carToReceive, Car carToGive, decimal cashChange)
+    {
+        ValidateExchange(carToGive, cashChange);
+        Car? existingCar = inventory.Find(carToGive.Manufacturer, carToGive.Model);
+        if (existingCar == null || !inventory.Remove(existingCar))
+        {
+            throw new InvalidOperationException("Автомобіль більше недоступний для обміну.");
+        }
+
+        inventory.Add(carToReceive);
+        if (cashChange < 0)
+        {
+            account.Pay(-cashChange);
+        }
+        else if (cashChange > 0)
+        {
+            account.Add(cashChange);
+        }
     }
 }

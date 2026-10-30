@@ -64,28 +64,41 @@ static void UserMenu(CarDealer dealer, List<ICarDealer> otherDealers)
             string manufacturer = Console.ReadLine() ?? "";
             Console.Write("Модель: ");
             string model = Console.ReadLine() ?? "";
-            Console.WriteLine(dealer.SellToCustomer(manufacturer, model)
-                ? "Автомобіль придбано."
-                : "Автомобіль не знайдено.");
+            try
+            {
+                dealer.SellToCustomer(manufacturer, model);
+                Console.WriteLine("Автомобіль придбано.");
+            }
+            catch (InvalidOperationException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
         else if (choice == "3")
         {
-            Console.Write("Виробник вашого авто: ");
+            Console.Write("Виробник авто цього автосалону для обміну: ");
             string ownManufacturer = Console.ReadLine() ?? "";
-            Console.Write("Модель вашого авто: ");
+            Console.Write("Модель авто цього автосалону: ");
             string ownModel = Console.ReadLine() ?? "";
-            Console.Write("Рік вашого авто: ");
-            int.TryParse(Console.ReadLine(), out int year);
-            Console.Write("Вартість вашого авто: ");
-            decimal.TryParse(Console.ReadLine(), out decimal price);
             Console.Write("Виробник бажаного авто: ");
             string desiredManufacturer = Console.ReadLine() ?? "";
             Console.Write("Модель бажаного авто: ");
             string desiredModel = Console.ReadLine() ?? "";
-            bool success = dealer.Trade(
-                new Car(ownManufacturer, ownModel, year, price),
-                desiredManufacturer, desiredModel);
-            Console.WriteLine(success ? "Обмін виконано." : "Обмін неможливий.");
+            Console.Write("Назва іншого автосалону (1 або 2): ");
+            string otherDealerName = Console.ReadLine() ?? "";
+            ICarDealer? otherDealer = otherDealers.FirstOrDefault(item => item.Name.EndsWith(otherDealerName));
+            try
+            {
+                if (otherDealer == null) throw new InvalidOperationException("Автосалон не знайдено.");
+                Car? carToGive = dealer.FindCar(ownManufacturer, ownModel);
+                if (carToGive == null) throw new InvalidOperationException("Автомобіль цього салону не знайдено.");
+                dealer.Exchange(otherDealer, carToGive, desiredManufacturer, desiredModel);
+                Console.WriteLine("Обмін виконано.");
+            }
+            catch (Exception ex) when (ex is InvalidOperationException or ArgumentException)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
         else if (choice == "4")
         {
