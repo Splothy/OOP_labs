@@ -12,3 +12,4 @@ C:\Users\hp\RiderProjects\OOP_labs\lab_4\obj\Debug\net10.0\refint\lab_4.dll
 C:\Users\hp\RiderProjects\OOP_labs\lab_4\obj\Debug\net10.0\lab_4.pdb
 C:\Users\hp\RiderProjects\OOP_labs\lab_4\obj\Debug\net10.0\lab_4.genruntimeconfig.cache
 C:\Users\hp\RiderProjects\OOP_labs\lab_4\obj\Debug\net10.0\ref\lab_4.dll
+C:\Users\hp\RiderProjects\OOP_labs\lab_4\obj\Debug\net10.0\lab_4.sourcelink.json
