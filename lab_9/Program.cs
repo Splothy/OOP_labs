@@ -43,16 +43,14 @@ sorter.Sort(numbersLambda2, (left, right) => left < right);
 Console.WriteLine($"Лямбда (спадання):     [{string.Join(", ", numbersLambda2)}]\n");
 
 
-// 4. Патерн 'Стратегія': нестандартні критерії сортування
+// 4.нестандартні критерії сортування
 Console.WriteLine("--- 4. Кастомні стратегії сортування через делегат ---");
 int[] mixedNumbers = [-18, 5, -2, 14, 0, -30, 7, 22, -9];
 Console.WriteLine($"Початковий масив:     [{string.Join(", ", mixedNumbers)}]");
 
-// Стратегія 1: за зростанням модуля числа
 var sortedByAbs = sorter.SortCopy(mixedNumbers, BubbleSorter.ByAbsoluteValueAscending);
 Console.WriteLine($"За модулем |x|:       [{string.Join(", ", sortedByAbs)}]");
 
-// Стратегія 2: спочатку парні числа, потім непарні
 var sortedEvenFirst = sorter.SortCopy(mixedNumbers, BubbleSorter.EvenFirst);
 Console.WriteLine($"Парні спочатку:       [{string.Join(", ", sortedEvenFirst)}]\n");
 

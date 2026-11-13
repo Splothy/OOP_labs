@@ -2,7 +2,7 @@ using System.Collections;
 
 namespace lab_7;
 
-public sealed class GenericLinkedList<T> : IEnumerable<T>
+public sealed class GenericLinkedList<T> : IEnumerable<T> where T : IComparable<T>
 {
     private LinkedListNode<T>? _first;
     private LinkedListNode<T>? _last;
