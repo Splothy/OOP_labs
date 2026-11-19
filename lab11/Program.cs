@@ -1,4 +1,5 @@
 using lab11;
+using System.Numerics;
 
 Console.OutputEncoding = System.Text.Encoding.UTF8;
 Console.WriteLine("Лабораторна робота 11. Узагальнений Calculator\n");
@@ -10,7 +11,7 @@ ShowFractionalCalculator(new Calculator<decimal>(), 7.5m, 2.5m);
 
 // Перший generic-метод приймає цілочисельний калькулятор.
 static void ShowIntegerCalculator<T>(Calculator<T> calculator, T left, T right)
-    where T : struct, IConvertible
+    where T : INumber<T>
 {
     Console.WriteLine($"Цілочисельний калькулятор ({typeof(T).Name}):");
     Console.WriteLine($"{left} + {right} = {calculator.Add(left, right)}");
@@ -22,7 +23,7 @@ static void ShowIntegerCalculator<T>(Calculator<T> calculator, T left, T right)
 
 // Другий generic-метод приймає дробові калькулятори.
 static void ShowFractionalCalculator<T>(Calculator<T> calculator, T left, T right)
-    where T : struct, IConvertible
+    where T : INumber<T>
 {
     Console.WriteLine($"Дробовий калькулятор ({typeof(T).Name}):");
     Console.WriteLine($"{left} + {right} = {calculator.Add(left, right)}");

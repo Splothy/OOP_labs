@@ -198,12 +198,15 @@ public class CalculatorTests
     }
 
     [Fact]
-    public void UnsupportedTypesAreRejected()
+    public void LongCalculatorSupportsNumericOperations()
     {
-        Assert.Throws<NotSupportedException>(() => new Calculator<bool>());
-        Assert.Throws<NotSupportedException>(() => new Calculator<char>());
-        Assert.Throws<NotSupportedException>(() => new Calculator<long>());
-        Assert.Throws<NotSupportedException>(() => new Calculator<DateTime>());
+        var calculator = new Calculator<long>();
+
+        Assert.Equal(5_000_000_002L, calculator.Add(5_000_000_000L, 2L));
+        Assert.Equal(4_999_999_998L, calculator.Subtract(5_000_000_000L, 2L));
+        Assert.Equal(2_500_000_000L, calculator.Divide(5_000_000_000L, 2L));
+        Assert.Equal(10_000_000_000L, calculator.Multiply(5_000_000_000L, 2L));
+        Assert.Equal(10_000_000_000L, calculator.Pow(100_000L, 2));
     }
 
     [Fact]

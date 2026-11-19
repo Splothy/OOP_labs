@@ -1,5 +1,9 @@
 using System.Text;
-using lab12;
+using lab12.Interfaces;
+using lab12.Notifications;
+using lab12.Services;
+using lab12.UI;
+using lab12.Validation;
 using Microsoft.Extensions.DependencyInjection;
 
 Console.InputEncoding = Encoding.UTF8;
